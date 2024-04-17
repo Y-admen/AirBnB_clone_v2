@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 Base = declarative_base()
@@ -11,28 +12,28 @@ class BaseModel:
     Base class for all models.
     """
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
 
     def __init__(self, *args, **kwargs):
         """
         Initialize BaseModel instance.
         """
+        self.id = str(uuid.uuid4())
+        self.created_at = self.updated_at = datetime.now(timezone.utc)
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.utcnow()
 
     def save(self):
         """
         Save the instance to the database.
         """
-        self.updated_at = datetime.utcnow()
-        models.storage.new(self)
-        models.storage.save()
+        self.updated_at = datetime.now(timezone.utc)
+        from models import storage
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """
@@ -50,4 +51,13 @@ class BaseModel:
         """
         Delete the instance from the database.
         """
-        models.storage.delete(self)
+        from models import storage
+        storage.delete(self)
+    def __str__(self):
+        """print representation"""
+        d = self.__dict__.copy()  # create a copy of the dictionary
+        d['created_at'] = self.created_at.isoformat()
+        d['updated_at'] = self.updated_at.isoformat()
+        if "_sa_instance_state" in d:
+            del d["_sa_instance_state"]
+        return f"[{self.__class__.__name__}] ({self.id}) {d}"
