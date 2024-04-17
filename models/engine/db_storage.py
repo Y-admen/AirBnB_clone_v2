@@ -22,17 +22,17 @@ class DBStorage:
     def __init__(self):
         """ Initializes class """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(os.getenv('HBNB_MYSQL_USER'),
-                                             os.getenv('HBNB_MYSQL_PWD'),
-                                             os.getenv('HBNB_MYSQL_HOST'),
-                                             os.getenv('HBNB_MYSQL_DB')),
+                                      format(getenv('HBNB_MYSQL_USER'),
+                                             getenv('HBNB_MYSQL_PWD'),
+                                             getenv('HBNB_MYSQL_HOST'),
+                                             getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
 
-        if os.getenv('HBNB_ENV') == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-         """Returns a dictionary of models currently in database"""
+        """Returns a dictionary of models currently in database"""
         objs = []
         data = {}
         if not cls:
@@ -63,7 +63,7 @@ class DBStorage:
         Session = scoped_session(session_factory)
         self.__session = Session()
 
-     def delete(self, obj=None):
+    def delete(self, obj=None):
         """Deletes obj from the database"""
         if obj:
             self.__session.delete(obj)

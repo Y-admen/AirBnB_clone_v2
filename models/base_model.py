@@ -12,8 +12,10 @@ class BaseModel:
     Base class for all models.
     """
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
-    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime, nullable=False,
+                        default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False,
+                        default=datetime.now(timezone.utc))
 
     def __init__(self, *args, **kwargs):
         """
@@ -53,6 +55,7 @@ class BaseModel:
         """
         from models import storage
         storage.delete(self)
+
     def __str__(self):
         """print representation"""
         d = self.__dict__.copy()  # create a copy of the dictionary
