@@ -147,8 +147,9 @@ class HBNBCommand(cmd.Cmd):
             params[key] = value
         # Create an instance of the specified class
         try:
-            new_instance = eval(f"{class_name}(**params)")
-            storage.save()
+            new_instance = globals().get(f"{class_name}(**params)")
+            new_instance.save()
+            storage.new(new_instance)
             print(new_instance.id)
         except Exception as e:
             print(f"{e}")
@@ -233,11 +234,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            cls = HBNBCommand.classes[args]
+            for k, v in storage.all(cls).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)

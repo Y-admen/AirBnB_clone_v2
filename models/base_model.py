@@ -13,16 +13,16 @@ class BaseModel:
     """
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False,
-                        default=datetime.now(timezone.utc))
+                        default=datetime.utc)
     updated_at = Column(DateTime, nullable=False,
-                        default=datetime.now(timezone.utc))
+                        default=datetime.utc)
 
     def __init__(self, *args, **kwargs):
         """
         Initialize BaseModel instance.
         """
         self.id = str(uuid.uuid4())
-        self.created_at = self.updated_at = datetime.now(timezone.utc)
+        self.created_at = self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
@@ -43,8 +43,8 @@ class BaseModel:
         """
         result = self.__dict__.copy()
         result["__class__"] = self.__class__.__name__
-        result["created_at"] = self.created_at.isoformat()
-        result["updated_at"] = self.updated_at.isoformat()
+        result["created_at"] = self.created_at.datetime.utcnow()
+        result["updated_at"] = self.updated_at.datetime.utcnow()
         if "_sa_instance_state" in result:
             del result["_sa_instance_state"]
         return result
@@ -59,8 +59,7 @@ class BaseModel:
     def __str__(self):
         """print representation"""
         d = self.__dict__.copy()  # create a copy of the dictionary
-        d['created_at'] = self.created_at.isoformat()
-        d['updated_at'] = self.updated_at.isoformat()
+        cls = self.__class__.__name__
         if "_sa_instance_state" in d:
             del d["_sa_instance_state"]
-        return f"[{self.__class__.__name__}] ({self.id}) {d}"
+        return f"[{cls}] ({self.id}) {d}"
