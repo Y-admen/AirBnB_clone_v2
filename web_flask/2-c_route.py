@@ -16,7 +16,7 @@ def hello_HBNB():
     return "Hello HBNB!"
 
 
-@flask.route("/hbnb")
+@flask.route("/hbnb", strict_slashes=False)
 def hbnb():
     """
     Renders the "HBNB" string in response to a GET request to the "/hbnb".
@@ -25,7 +25,7 @@ def hbnb():
     return "HBNB"
 
 
-@flask.route("/c/<text>")
+@flask.route("/c/<text>", strict_slashes=False)
 def dynamic_route(text):
     modified_text = text.replace("_", " ")
     return f'C {modified_text}'

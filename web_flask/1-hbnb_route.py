@@ -16,7 +16,7 @@ def hello_HBNB():
     return "Hello HBNB!"
 
 
-@flask.route("/hbnb")
+@flask.route("/hbnb", strict_slashes=False)
 def hbnb():
     """
     Renders the "HBNB" string in response to a GET request to the "/hbnb".
