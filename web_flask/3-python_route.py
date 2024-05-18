@@ -27,8 +27,24 @@ def hbnb():
 
 @flask.route("/c/<text>")
 def dynamic_route(text):
+    """
+    Replaces underscores in the input text with spaces and prepends 'C '
+    to the modified text.
+    """
+
     modified_text = text.replace("_", " ")
-    return f'C {modified_text}'
+    return f"C {modified_text}"
+
+
+@flask.route("/python/<text>")
+def route_python(text="is cool"):
+    """
+    Renders a string that says "Python {text}",
+    where {text} is the provided text with underscores replaced by spaces.
+    """
+
+    text = text.replace("_", " ")
+    return f"Python {text}"
 
 
 if __name__ == '__main__':
