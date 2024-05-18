@@ -27,8 +27,8 @@ def hbnb():
 
 @flask.route("/c/<text>")
 def dynamic_rout(text):
-        modified_text = text.replace("_", " ")
-        return f'C {modified_text}'
+    modified_text = text.replace("_", " ")
+    return f'C {modified_text}'
 
 
 if __name__ == '__main__':
