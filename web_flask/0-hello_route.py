@@ -2,7 +2,9 @@
 """flask starter"""
 from flask import Flask
 
+
 flask = Flask(__name__)
+
 
 @flask.route("/", strict_slashes=False)
 def hello_HBNB():
@@ -13,5 +15,5 @@ def hello_HBNB():
     return "Hello HBNB!"
 
 
-if __name__== '__main__':
-        flask.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    flask.run(host='0.0.0.0', port=5000)
