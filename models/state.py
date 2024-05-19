@@ -18,13 +18,14 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-        @property
-        def cities(self):
-            """ Returns list of cities according to state.id"""
-            from models import storage
-            cities = storage.all(city)
-            data = []
-            for city in cities:
-                if city.state_id == self.id:
-                    data.append(city)
-            return data
+    @property
+    def cities(self):
+        """ Returns list of cities according to state.id"""
+        from models import storage
+        from models.city import City
+        cities = []
+        all_cities = storage.all(City).values()
+        for obj in all_cities:
+            if isinstance(obj, City) and obj.state_id == self.id:
+                cities.append(obj)
+        return cities

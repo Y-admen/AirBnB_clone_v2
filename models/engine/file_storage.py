@@ -52,10 +52,16 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
-
+                        class_name = value['__class__']
+                        if class_name in self.classes:
+                                self.__objects[key] = self.classes[class_name](**val)
+                        else:
+                                print(f"Skipping unknown class: {class_name}")
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+        # If the file is corrupted or doesn't exist, create a new empty file
+                with open(self.__file_path, 'w', encoding='utf-8') as f:
+                        json.dump({}, f)
+                self.__objects = {}
     def delete(self, obj=None):
         """Deletes the object obj if obj is in __objects"""
         if obj:

@@ -147,7 +147,9 @@ class HBNBCommand(cmd.Cmd):
             params[key] = value
         # Create an instance of the specified class
         try:
-            new_instance = globals().get(f"{class_name}(**params)")
+            Class = globals().get(class_name)
+            if Class:
+                new_instance = Class(**params)
             new_instance.save()
             storage.new(new_instance)
             print(new_instance.id)
@@ -215,7 +217,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
