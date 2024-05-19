@@ -3,7 +3,11 @@
 CREATE DATABASE IF NOT EXISTS `hbnb_dev_db`;
 USE `hbnb_dev_db`;
 
-GRANT ALL PRIVILEGES ON `hbnb_dev_db`.* TO 'hbnb_dev'@'localhost'
-	IDENTIFIED BY 'hbnb_dev_pwd';
-GRANT SELECT ON `performance_schema`.* TO 'hbnb_dev'@'localhost'
-	IDENTIFIED BY 'hbnb_dev_pwd';
+-- Check if the user already exists
+DROP USER IF EXISTS 'hbnb_dev'@'localhost';
+
+-- Create the user
+CREATE USER 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
+
+GRANT ALL PRIVILEGES ON `hbnb_dev_db`.* TO 'hbnb_dev'@'localhost';
+GRANT SELECT ON `performance_schema`.* TO 'hbnb_dev'@'localhost';
