@@ -29,3 +29,12 @@ class State(BaseModel, Base):
             if isinstance(obj, City) and obj.state_id == self.id:
                 cities.append(obj)
         return cities
+
+    def __str__(self):
+        """Returns a string representation of the State object"""
+        state_dict = self.__dict__.copy()
+        if "_sa_instance_state" in state_dict:
+            del state_dict["_sa_instance_state"]
+        if "name" not in state_dict:
+            state_dict["name"] = ""
+        return f"[State] ({self.id}) {state_dict}"

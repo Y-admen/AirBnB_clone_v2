@@ -18,3 +18,12 @@ class City(BaseModel, Base):
     else:
         name = ""
         state_id = ""
+
+    def __str__(self):
+        """Returns a string representation of the City object"""
+        city_dict = self.__dict__.copy()
+        if "_sa_instance_state" in city_dict:
+            del city_dict["_sa_instance_state"]
+        if "name" not in city_dict:
+            city_dict["name"] = ""
+        return f"[City] ({self.id}) {city_dict}"
